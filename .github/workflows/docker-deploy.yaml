@@ -1,9 +1,5 @@
 name: Deploy Docker Image to Server
 on:
-  push:
-    branches:
-      - prod
-
   workflow_run:
     # This GitHub Action depends on another, which package up docker and pushes it to a  docker repo
     workflows: ["Build and Push Docker Image"]
