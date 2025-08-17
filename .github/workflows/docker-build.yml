@@ -34,8 +34,8 @@ jobs:
         with:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:${{ env.TIMESTAMP }}
-            ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
+            docker.io/$${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:${{ env.TIMESTAMP }}
+            docker.io/$${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
           annotations: ${{ steps.meta.outputs.annotations }}
           provenance: true
           sbom: true
