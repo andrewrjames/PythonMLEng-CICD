@@ -22,7 +22,7 @@ jobs:
             docker pull ${{ vars.DOCKER_USERNAME }}/mleng_sayhi:latest
             docker stop ${{ vars.DOCKER_USERNAME }}/mleng_sayhi || true
             docker rm ${{ vars.DOCKER_USERNAME }}/mleng_sayhi || true
-            docker run -d --name ${{ vars.DOCKER_USERNAME }}/mleng_sayhi -v /opt/assignment_outputs:/app/data ${{ vars.DOCKER_USERNAME }}/mleng_sayhi:latest
+            docker run -d --name ${{ vars.DOCKER_USERNAME }}_mleng_sayhi -v /opt/assignment_outputs:/app/data ${{ vars.DOCKER_USERNAME }}/mleng_sayhi:latest
 
 # The final block "logs on" to the remote server
 # - gets the latest docker image from the repository
