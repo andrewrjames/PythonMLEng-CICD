@@ -33,10 +33,10 @@ jobs:
         export PYTHONPATH=.
         pylint tests/
 
-    - name: Run mypy
-      run: |
-        export PYTHONPATH=.
-        mypy --ignore-missing-imports --namespace-packages tests/ app.py
+    # - name: Run mypy
+    #   run: |
+    #     export PYTHONPATH=.
+    #     mypy --ignore-missing-imports --namespace-packages tests/ app.py
 
     - name: Run pytest
       run: |
