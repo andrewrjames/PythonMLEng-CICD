@@ -1,5 +1,4 @@
-name: Build and Push Docker Image
-# "best practice", according to https://docs.docker.com/guides/gha/
+name: Build and Push Docker Image # "best practice", according to https://docs.docker.com/guides/gha/
 on:
   push:
     branches:
