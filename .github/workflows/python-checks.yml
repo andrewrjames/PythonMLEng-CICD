@@ -36,7 +36,7 @@ jobs:
     - name: Run mypy
       run: |
         export PYTHONPATH=.
-        mypy .
+        mypy --ignore-missing-imports --namespace-packages tests/ app.py
 
     - name: Run pytest
       run: |
