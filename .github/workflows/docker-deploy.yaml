@@ -38,14 +38,11 @@ jobs:
             docker run -d --name "${APP_NAME}" \
               -v /opt/assignment_outputs:/app/data \
               "${IMAGE}" \
-              uvicorn app:app --host 0.0.0.0 --port 8000
+              python app.py
 
             echo "Containers now:"
             docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Command}}"
 
-            echo "Smoke test volume:"
-            docker exec "${APP_NAME}" sh -lc 'echo deploy-ok > /app/data/_deploy_probe.txt'
-            ls -l /opt/assignment_outputs | tail -n 5
 
 
           # REG="docker.io"
