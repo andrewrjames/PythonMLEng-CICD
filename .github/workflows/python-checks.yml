@@ -30,12 +30,15 @@ jobs:
 
     - name: Run pylint
       run: |
+        export PYTHONPATH=.
         pylint tests/
 
     - name: Run mypy
       run: |
+        export PYTHONPATH=.
         mypy .
 
     - name: Run pytest
       run: |
+        export PYTHONPATH=.
         pytest tests

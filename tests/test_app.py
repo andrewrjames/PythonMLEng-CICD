@@ -6,12 +6,6 @@ This module contains test cases for functions in the app module,
 specifically testing the add_numbers function.
 """
 
-import sys
-from pathlib import Path
-
-# Add the parent directory to Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from app import add_numbers
 
 def test_add_numbers():
