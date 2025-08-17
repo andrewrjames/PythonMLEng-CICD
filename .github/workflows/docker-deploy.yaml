@@ -20,11 +20,40 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             REG="docker.io"
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin 
-            docker pull ${REG}/${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
-            docker stop ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi || true
-            docker rm ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi || true
-            docker run -d --name ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi -v /opt/assignment_outputs:/app/data ${REG}/${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
+            IMAGE="${REG}/${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest"
+            APP_NAME="${{ secrets.DOCKER_USERNAME }}_mleng_sayhi"
+
+            # Ensure host mount exists
+            sudo mkdir -p /opt/assignment_outputs
+
+            echo "Login & pull…"
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+            docker pull "${IMAGE}"
+            docker image inspect "${IMAGE}" --format 'Cmd={{.Config.Cmd}}'
+
+            echo "Recreate container…"
+            docker rm -f "${APP_NAME}" || true
+
+            # If your image CMD already runs uvicorn correctly, you can drop the last line override
+            docker run -d --name "${APP_NAME}" \
+              -v /opt/assignment_outputs:/app/data \
+              "${IMAGE}" \
+              uvicorn app:app --host 0.0.0.0 --port 8000
+
+            echo "Containers now:"
+            docker ps -a --format "table {{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Command}}"
+
+            echo "Smoke test volume:"
+            docker exec "${APP_NAME}" sh -lc 'echo deploy-ok > /app/data/_deploy_probe.txt'
+            ls -l /opt/assignment_outputs | tail -n 5
+
+
+          # REG="docker.io"
+          # echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin 
+          # docker pull ${REG}/${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
+          # docker stop ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi || true
+          # docker rm ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi || true
+          # docker run -d --name ${{ secrets.DOCKER_USERNAME }}_mleng_sayhi -v /opt/assignment_outputs:/app/data ${REG}/${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
 
 # The final block "logs on" to the remote server
 # - gets the latest docker image from the repository
