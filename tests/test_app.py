@@ -2,4 +2,7 @@
 from ..app import add_numbers
 
 def test_add_numbers():
+    """
+    Test add_numbers function with basic integer inputs
+    """
     assert 3 == add_numbers(1,2)
